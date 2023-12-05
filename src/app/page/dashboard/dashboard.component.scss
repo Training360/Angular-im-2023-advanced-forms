@@ -1,0 +1,24 @@
+table {
+  font-size: 1.2em;
+
+  p[cdkDrag] {
+    cursor: pointer;
+    padding: 0.5em;
+    background-color: aliceblue;
+    user-select: none;
+
+    &:hover {
+      background-color: rgb(165, 208, 246);
+    }
+  }
+
+  .mat-button-toggle.info {
+    background-color: #306cee;
+    color: #ffffff;
+  }
+
+  .mat-button-toggle.danger {
+    background-color: #dc3545;
+    color: #ffffff;
+  }
+}

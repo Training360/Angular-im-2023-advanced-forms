@@ -1,0 +1,48 @@
+<div fxLayout="row">
+  <div fxFlex="20" fxFlex.lt-md="1"></div>
+  <div fxFlex="60" fxFlex.lt-md="98">
+    <h3>{{ formSettings.name }}</h3>
+    <form fxLayout="column" fxLayoutGap="1.5em" [formGroup]="form" (ngSubmit)="onUpdate()">
+
+      @for (field of formSettings.fields; track $index) {
+        @switch(field.type) {
+          @case ('select') {
+            <mat-form-field appearance="outline">
+              <mat-label>{{ field.label }}</mat-label>
+              <mat-select [formControlName]="field.key">
+                @for (option of field.options; track $index) {
+                  <mat-option [value]="option.value">
+                    {{ option.text }}
+                  </mat-option>
+                }
+              </mat-select>
+            </mat-form-field>
+          }
+          @case ('checkbox') {
+            <mat-checkbox [color]="'primary'" [formControlName]="field.key">
+              {{ field.label }}
+            </mat-checkbox>
+          }
+          @case ('hidden') {
+            <input type="hidden" [formControlName]="field.key">
+          }
+          @default {
+            <mat-form-field appearance="outline">
+              <mat-label>{{ field.label }}</mat-label>
+              <input [formControlName]="field.key" matInput placeholder="{{ field.label }}">
+              @if (form.controls[field.key].invalid) {
+                <mat-hint>Wrong value</mat-hint>
+              }
+            </mat-form-field>
+          }
+        }
+      }
+
+
+      <button [disabled]="!form.valid" type="submit" mat-raised-button color="primary">
+        Save
+      </button>
+    </form>
+  </div>
+  <div fxFlex="20" fxFlex.lt-md="1"></div>
+</div>
