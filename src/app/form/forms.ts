@@ -1,66 +1,56 @@
-import { AsyncValidatorFn, ValidatorFn, Validators } from "@angular/forms";
-
-export interface IField {
-  type: 'input' | 'select' | 'checkbox' | 'radio' | 'textarea' | 'hidden';
-  label: string;
-  key: string;
-  validators?: ValidatorFn[];
-  asyncValidators?: AsyncValidatorFn[];
-  options?: {text: string, value: string}[];
-  defaultValue?: any;
-}
-
-export interface IForm {
-  name: string;
-  fields: IField[];
-}
+import { Validators } from "@angular/forms";
+import { IForm } from "../common/form-json/form-json.component";
 
 export const customerAdd: IForm = {
   name: 'Add new Customer',
   fields: [
     {
-      type: 'input',
+      controlType: 'input',
       label: 'Name',
       key: 'name',
       validators: [
         Validators.required,
         Validators.pattern('^[a-zA-Z0-9 ]{3,}$'),
-      ]
+      ],
+      errorMessage: 'Min. 3 chars',
     },
     {
-      type: 'input',
+      controlType: 'input',
       label: 'Email',
       key: 'email',
       validators: [
         Validators.required,
         Validators.email
-      ]
+      ],
+      errorMessage: 'Not a valid email',
     },
     {
-      type: 'input',
+      controlType: 'input',
       label: 'Address',
       key: 'address',
       validators: [
         Validators.required
       ],
+      errorMessage: 'Required'
     },
     {
-      type: 'input',
+      controlType: 'input',
       label: 'IP address',
       key: 'ip_address',
       validators: [
         Validators.required,
         Validators.pattern(/^((25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$/)
       ],
+      errorMessage: 'Mask: xxx.xxx.xxx.xxx'
     },
     {
-      type: 'checkbox',
+      controlType: 'checkbox',
       label: 'Active',
       key: 'active',
       defaultValue: false,
     },
     {
-      type: 'hidden',
+      controlType: 'hidden',
       label: 'ID',
       key: 'id',
       defaultValue: 0,

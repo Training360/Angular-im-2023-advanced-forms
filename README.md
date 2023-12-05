@@ -1,4 +1,4 @@
-# Angular Optimisation Course
+# Angular Advanced Forms
 
 ## Start
 - `npm run dev`
@@ -8,9 +8,12 @@
 - [customer-editor.component.html](src/app/page/customer-editor/customer-editor.component.html)
 
 ## JSON-based forms
-- create: `src/app/form/forms.ts`
 - command: `ng g c common/form-json`
 - [FormJsonComp.](src/app/common/form-json/form-json.component.ts)
+- [FormJsonComp. html](src/app/common/form-json/form-json.component.html)
+- create: `src/app/form/forms.ts`
+- [Forms.ts](src/app/form/forms.ts)
+- [CustomersComp: add form-json](src/app/page/customer/customer.component.html)
 
 ## Async Validation
 - [CustomerService: query](src/app/service/customer.service.ts)
