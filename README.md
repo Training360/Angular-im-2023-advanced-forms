@@ -24,7 +24,41 @@
 - [AppRoutes: customer/add](src/app/app.routes.ts)
 
 ## Multi-field Validation
-- 
+- [FormJson: expand interface](src\app\common\form-json\form-json.component.ts)
+```typescript
+export interface IForm {
+  name: string;
+  fields: IField[];
+  validators?: ValidatorFn[];
+}
+```
+- change settings:
+```typescript
+if (formSettings.validators) {
+  this.form.addValidators(formSettings.validators);
+}
+```
+- [FormJson html](src\app\common\form-json\form-json.component.html)
+```html
+@for (err of form.errors | keyvalue; track $index) {
+  <mat-hint>{{ err.value || 'Error' }}</mat-hint>
+}
+```
+- [Forms.ts](src\app\form\forms.ts)
+```typescript
+name: 'Add new Customer',
+validators: [
+  (control: AbstractControl) => {
+    const value = control.value;
+    if (/^10/.test(value['ip_address']) && /\@\w*\..*$/.test(value['email'])) {
+      return {emailIpError: 'Corporate emails cannot have a top-level domain.'};
+    }
+    return null;
+  },
+],
+```
+
+## 
 
 
 

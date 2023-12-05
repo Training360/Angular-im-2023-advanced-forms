@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
-import { FormControl, FormControlOptions, FormGroup, ReactiveFormsModule } from '@angular/forms';
+import { FormControl, FormControlOptions, FormGroup, ReactiveFormsModule, ValidatorFn } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatSelectModule } from '@angular/material/select';
 import { MatInputModule } from '@angular/material/input';
@@ -21,6 +21,7 @@ export interface IField extends FormControlOptions {
 export interface IForm {
   name: string;
   fields: IField[];
+  validators?: ValidatorFn[];
 }
 
 @Component({
@@ -44,6 +45,9 @@ export class FormJsonComponent<T extends { [key: string]: any }> {
   @Input() set settings(formSettings: IForm) {
     if (formSettings) {
       this.form = new FormGroup({});
+      if (formSettings.validators) {
+        this.form.addValidators(formSettings.validators);
+      }
 
       formSettings.fields.forEach(field => {
         this.addControl(this.form, field);

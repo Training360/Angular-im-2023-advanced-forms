@@ -1,8 +1,17 @@
-import { Validators } from "@angular/forms";
+import { AbstractControl, Validators } from "@angular/forms";
 import { IForm } from "../common/form-json/form-json.component";
 
 export const customerAdd: IForm = {
   name: 'Add new Customer',
+  validators: [
+    (control: AbstractControl) => {
+      const value = control.value;
+      if (/^10/.test(value['ip_address']) && /\@\w*\..*$/.test(value['email'])) {
+        return {emailIpError: 'Corporate emails cannot have a top-level domain.'};
+      }
+      return null;
+    },
+  ],
   fields: [
     {
       controlType: 'input',

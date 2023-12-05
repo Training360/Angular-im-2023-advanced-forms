@@ -30,6 +30,10 @@
         }
       }
 
+      @for (err of form.errors | keyvalue; track $index) {
+        <mat-hint>{{ err.value || 'Error' }}</mat-hint>
+      }
+
 
       <button [disabled]="!form.valid" type="submit" mat-raised-button color="primary">
         Save
