@@ -27,10 +27,14 @@
               }
             </mat-form-field>
           }
+          @case ('component') {
+            <div class="component">
+              <h4>{{ field.label }}</h4>
+              <div [componentHost]="field" style="margin: 0"></div>
+            </div>
+          }
         }
       }
-
-      <app-country-selector [formGroup]="form" formControlName="country"></app-country-selector>
 
       @for (err of form.errors | keyvalue; track $index) {
         <mat-hint>{{ err.value || 'Error' }}</mat-hint>

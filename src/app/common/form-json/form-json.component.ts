@@ -1,5 +1,21 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
-import { FormControl, FormControlOptions, FormGroup, ReactiveFormsModule, ValidatorFn } from '@angular/forms';
+import {
+  AfterViewInit,
+  Component,
+  Directive,
+  EventEmitter,
+  Input,
+  Output,
+  ViewChildren,
+  ViewContainerRef,
+  inject,
+} from '@angular/core';
+import {
+  FormControl,
+  FormControlOptions,
+  FormGroup,
+  ReactiveFormsModule,
+  ValidatorFn,
+} from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatSelectModule } from '@angular/material/select';
 import { MatInputModule } from '@angular/material/input';
@@ -10,19 +26,36 @@ import { MatButtonModule } from '@angular/material/button';
 import { CountrySelectorComponent } from '../country-selector/country-selector.component';
 
 export interface IField extends FormControlOptions {
-  controlType: 'input' | 'select' | 'checkbox' | 'radio' | 'textarea' | 'hidden' | 'component';
+  controlType:
+    | 'input'
+    | 'select'
+    | 'checkbox'
+    | 'radio'
+    | 'textarea'
+    | 'hidden'
+    | 'component';
   label: string;
   key: string;
-  options?: { text: string, value: string }[];
+  options?: { text: string; value: string }[];
   defaultValue?: any;
   type?: string; // number | text | email | ...
   errorMessage?: string;
+  cmpLoader?: () => any;
 }
 
 export interface IForm {
   name: string;
   fields: IField[];
   validators?: ValidatorFn[];
+}
+
+@Directive({
+  selector: '[componentHost]',
+  standalone: true,
+})
+export class ComponentHostDirective {
+  public readonly viewContainerRef = inject(ViewContainerRef);
+  @Input({ required: true }) componentHost!: IField;
 }
 
 @Component({
@@ -38,11 +71,16 @@ export interface IForm {
     MatButtonModule,
     MatCheckboxModule,
     CountrySelectorComponent,
+    ComponentHostDirective,
   ],
   templateUrl: './form-json.component.html',
-  styleUrl: './form-json.component.scss'
+  styleUrl: './form-json.component.scss',
 })
-export class FormJsonComponent<T extends { [key: string]: any }> {
+export class FormJsonComponent<T extends { [key: string]: any }>
+  implements AfterViewInit
+{
+  @ViewChildren(ComponentHostDirective)
+  componentHosts!: ComponentHostDirective[];
 
   @Input() set settings(formSettings: IForm) {
     if (formSettings) {
@@ -51,7 +89,7 @@ export class FormJsonComponent<T extends { [key: string]: any }> {
         this.form.addValidators(formSettings.validators);
       }
 
-      formSettings.fields.forEach(field => {
+      formSettings.fields.forEach((field) => {
         this.addControl(this.form, field);
       });
       this.formSettings = formSettings;
@@ -78,14 +116,48 @@ export class FormJsonComponent<T extends { [key: string]: any }> {
     const value = field.defaultValue || '';
     const validators = field.validators || [];
     const asyncValidators = field.asyncValidators || [];
-    form.addControl(field.key, new FormControl(
-      value,
-      { validators, asyncValidators },
-    ));
+    form.addControl(
+      field.key,
+      new FormControl(value, { validators, asyncValidators })
+    );
   }
 
   onUpdate() {
     this.update.emit(this.form.value);
   }
+
+  // DYNAMIC COMPONENT LOADING /////////////////////////////////////////////////
+  ngAfterViewInit() {
+    if (this.componentHosts) {
+      this.componentHosts.forEach((componentHost) => {
+        this.loadComponent(componentHost);
+      });
+    }
+  }
+
+  async loadComponent(host: ComponentHostDirective) {
+    const { viewContainerRef, componentHost } = host;
+    viewContainerRef.clear();
+
+    if (!componentHost.cmpLoader) {
+      return;
+    }
+
+    const comp = await componentHost.cmpLoader();
+
+    const { instance } = viewContainerRef.createComponent<any>(
+      comp
+    );
+
+    const control = this.form.get(componentHost.key);
+    instance.registerOnChange((value: any) => {
+      control?.setValue(value);
+    });
+    instance.registerOnTouched(() => {
+      control?.markAsTouched();
+    });
+  }
+
+  // DYNAMIC COMPONENT LOADING /////////////////////////////////////////////////
 
 }

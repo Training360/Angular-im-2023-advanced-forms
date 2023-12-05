@@ -1,30 +1,34 @@
-import { CommonModule } from '@angular/common';
+import { CommonModule, LowerCasePipe } from '@angular/common';
 import { Component, Provider, forwardRef } from '@angular/core';
-import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
-
-const COUNTRY_CONTROL_VALUE_ACCESSOR: Provider = {
-  provide: NG_VALUE_ACCESSOR,
-  useExisting: forwardRef(() => CountrySelectorComponent),
-  multi: true,
-};
+import { ControlValueAccessor, FormControl, NG_VALUE_ACCESSOR } from '@angular/forms';
 
 @Component({
   selector: 'app-country-selector',
   standalone: true,
   imports: [
     CommonModule,
+    LowerCasePipe,
   ],
   templateUrl: './country-selector.component.html',
   styleUrl: './country-selector.component.scss',
   providers: [
-    COUNTRY_CONTROL_VALUE_ACCESSOR,
+    {
+      provide: NG_VALUE_ACCESSOR,
+      useExisting: CountrySelectorComponent,
+      multi: true
+    }
   ],
 })
 export class CountrySelectorComponent implements ControlValueAccessor {
+
+  formControl: FormControl = new FormControl();
+
   countries = [
-    { code: 'IN', name: 'India' },
-    { code: 'US', name: 'United States' },
-    { code: 'NL', name: 'Netherlands' },
+    { code: 'HU', name: 'HUN' },
+    { code: 'US', name: 'USA' },
+    { code: 'NL', name: 'NL' },
+    { code: 'JM', name: 'JM' },
+    { code: 'SZ', name: 'SZ' },
   ];
   selected!: string;
   disabled = false;
@@ -51,3 +55,5 @@ export class CountrySelectorComponent implements ControlValueAccessor {
   }
 
 }
+
+

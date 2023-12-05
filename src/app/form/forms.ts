@@ -62,6 +62,10 @@ export const customerAdd: IForm = {
       controlType: 'component',
       label: 'Country',
       key: 'country',
+      cmpLoader: () => import(
+        '../common/country-selector/country-selector.component'
+      ).then(m => m.CountrySelectorComponent),
+      defaultValue: 'US',
     },
     {
       controlType: 'hidden',
