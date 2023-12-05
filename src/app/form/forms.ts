@@ -59,6 +59,11 @@ export const customerAdd: IForm = {
       defaultValue: false,
     },
     {
+      controlType: 'component',
+      label: 'Country',
+      key: 'country',
+    },
+    {
       controlType: 'hidden',
       label: 'ID',
       key: 'id',

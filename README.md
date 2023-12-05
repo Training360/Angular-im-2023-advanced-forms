@@ -24,7 +24,7 @@
 - [AppRoutes: customer/add](src/app/app.routes.ts)
 
 ## Multi-field Validation
-- [FormJson: expand interface](src\app\common\form-json\form-json.component.ts)
+- [FormJson: expand interface](src/app/common/form-json/form-json.component.ts)
 ```typescript
 export interface IForm {
   name: string;
@@ -38,13 +38,13 @@ if (formSettings.validators) {
   this.form.addValidators(formSettings.validators);
 }
 ```
-- [FormJson html](src\app\common\form-json\form-json.component.html)
+- [FormJson html](src/app/common/form-json/form-json.component.html)
 ```html
 @for (err of form.errors | keyvalue; track $index) {
   <mat-hint>{{ err.value || 'Error' }}</mat-hint>
 }
 ```
-- [Forms.ts](src\app\form\forms.ts)
+- [Forms.ts](src/app/form/forms.ts)
 ```typescript
 name: 'Add new Customer',
 validators: [
@@ -58,7 +58,10 @@ validators: [
 ],
 ```
 
-## 
+## ControlValueAccessor - Country Selector
+- command: `ng g c common/country-selector`
+- [CountrySelector edit](src/app/common/country-selector/country-selector.component.ts)
+- 
 
 
 

@@ -5,4 +5,5 @@ export class Customer {
   address: string = '';
   ip_address: string = '';
   active: boolean = true;
+  country?: string = '';
 }

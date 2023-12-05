@@ -7,9 +7,10 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
 import { CommonModule } from '@angular/common';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { MatButtonModule } from '@angular/material/button';
+import { CountrySelectorComponent } from '../country-selector/country-selector.component';
 
 export interface IField extends FormControlOptions {
-  controlType: 'input' | 'select' | 'checkbox' | 'radio' | 'textarea' | 'hidden';
+  controlType: 'input' | 'select' | 'checkbox' | 'radio' | 'textarea' | 'hidden' | 'component';
   label: string;
   key: string;
   options?: { text: string, value: string }[];
@@ -36,6 +37,7 @@ export interface IForm {
     MatInputModule,
     MatButtonModule,
     MatCheckboxModule,
+    CountrySelectorComponent,
   ],
   templateUrl: './form-json.component.html',
   styleUrl: './form-json.component.scss'

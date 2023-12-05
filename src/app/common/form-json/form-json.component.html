@@ -14,7 +14,7 @@
           @case ('hidden') {
             <input type="hidden" [formControlName]="field.key">
           }
-          @default {
+          @case ('input') {
             <mat-form-field appearance="outline">
               <mat-label>{{ field.label }}</mat-label>
               <input
@@ -29,6 +29,8 @@
           }
         }
       }
+
+      <app-country-selector [formGroup]="form" formControlName="country"></app-country-selector>
 
       @for (err of form.errors | keyvalue; track $index) {
         <mat-hint>{{ err.value || 'Error' }}</mat-hint>
