@@ -3,7 +3,12 @@ button {
   margin-right: 1em;
   border: solid 1px white;
   border-radius: 5px;
-  box-shadow: rgb(66, 59, 59) 0 0 3px;
+  box-shadow: rgb(66, 59, 59) 0 0 2px;
+  min-width: 5em;
+  cursor: pointer;
+  &:hover {
+    box-shadow: rgb(66, 59, 59) 0 0 3px;
+  }
   &.selected {
     svg {
       position: absolute;
