@@ -15,14 +15,13 @@
 - [Forms.ts](src/app/form/forms.ts)
 - command: `ng g c page/customer-add`
 - [CustomersComp: add link to customer-add](src/app/page/customer/customer.component.html)
+- [AppRoutes: customer/add](src/app/app.routes.ts)
 - [CustomerAddComp: add form-json](src/app/page/customer-add/customer-add.component.ts)
 
 ## Async Validation
 - [CustomerService: query](src/app/service/customer.service.ts)
 - [CustomerStore: createItem()](src/app/store/CustomerStore.ts)
 - [CustomerAddComp.](src/app/page/customer-add/customer-add.component.ts)
-- [CustomersComp: add button, remove country](src/app/page/customer/customer.component.html)
-- [AppRoutes: customer/add](src/app/app.routes.ts)
 
 ## Multi-field Validation
 - [FormJson: expand interface](src/app/common/form-json/form-json.component.ts)
