@@ -43,9 +43,11 @@ export interface IField extends FormControlOptions {
   type?: string; // number | text | email | ...
   errorMessage?: string;
   cmpLoader?: () => any;
-  control?: FormControl;
   template?: TemplateRef<any>;
-  context?: { formControl: AbstractControl };
+  context?: {
+    formControl: AbstractControl,
+    field?: Partial<IField>,
+  };
 }
 
 export interface IForm {
@@ -97,6 +99,7 @@ export class FormJsonComponent<T extends { [key: string]: any }>
         field.template = template;
         field.context = {
           formControl: this.form.get(key)!,
+          field,
         };
       }
     })
@@ -109,7 +112,10 @@ export class FormJsonComponent<T extends { [key: string]: any }>
       }
 
       formSettings.fields.forEach((field) => {
-        field.control = this.addControl(this.form, field);
+        field.context = {
+          formControl: this.addControl(this.form, field),
+          field,
+        };
       });
       this.formSettings = formSettings;
 
@@ -135,7 +141,6 @@ export class FormJsonComponent<T extends { [key: string]: any }>
     const value = field.dValue || '';
     const validators = field.validators || [];
     const asyncValidators = field.asyncValidators || [];
-    console.log(field.key, value, validators, asyncValidators);
     const control = new FormControl(value, { validators, asyncValidators });
     form.addControl(
       field.key,
