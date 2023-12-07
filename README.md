@@ -63,3 +63,4 @@ validators: [
 - [CountrySelector edit](src/app/common/country-selector/country-selector.component.ts)
 - [FormJson: ComponentHostDirective, IField, loadComponent, html](src/app/common/form-json/form-json.component.ts)
 - [Forms.ts: cmpLoader](src/app/form/forms.ts)
+- Template loader
