@@ -21,8 +21,6 @@ import { ControlValueAccessor, FormControl, NG_VALUE_ACCESSOR } from '@angular/f
 })
 export class CountrySelectorComponent implements ControlValueAccessor {
 
-  formControl: FormControl = new FormControl();
-
   countries = [
     { code: 'HU', name: 'HUN' },
     { code: 'US', name: 'USA' },

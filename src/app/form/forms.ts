@@ -56,7 +56,7 @@ export const customerAdd: IForm = {
       controlType: 'checkbox',
       label: 'Active',
       key: 'active',
-      defaultValue: false,
+      dValue: false,
     },
     {
       controlType: 'component',
@@ -65,13 +65,19 @@ export const customerAdd: IForm = {
       cmpLoader: () => import(
         '../common/country-selector/country-selector.component'
       ).then(m => m.CountrySelectorComponent),
-      defaultValue: 'US',
+      dValue: 'US',
+    },
+    {
+      controlType: 'template',
+      label: 'Country2',
+      key: 'country2',
+      dValue: 'HU',
     },
     {
       controlType: 'hidden',
       label: 'ID',
       key: 'id',
-      defaultValue: 0,
+      dValue: 0,
     }
   ],
 };

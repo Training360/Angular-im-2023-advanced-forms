@@ -19,6 +19,7 @@ import { CustomerService } from '../../service/customer.service';
 import { Observable, firstValueFrom, map } from 'rxjs';
 import { customerAdd } from '../../form/forms';
 import { FormJsonComponent } from '../../common/form-json/form-json.component';
+import { CountrySelectorComponent } from '../../common/country-selector/country-selector.component';
 
 @Component({
   selector: 'app-customer-add',
@@ -35,6 +36,7 @@ import { FormJsonComponent } from '../../common/form-json/form-json.component';
     MatCheckboxModule,
     MatSnackBarModule,
     FormJsonComponent,
+    CountrySelectorComponent,
   ],
   templateUrl: './customer-add.component.html',
   styleUrl: './customer-add.component.scss',

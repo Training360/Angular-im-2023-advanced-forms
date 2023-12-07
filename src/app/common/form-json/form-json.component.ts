@@ -5,11 +5,13 @@ import {
   EventEmitter,
   Input,
   Output,
+  TemplateRef,
   ViewChildren,
   ViewContainerRef,
   inject,
 } from '@angular/core';
 import {
+  AbstractControl,
   FormControl,
   FormControlOptions,
   FormGroup,
@@ -20,10 +22,9 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatSelectModule } from '@angular/material/select';
 import { MatInputModule } from '@angular/material/input';
 import { MatCheckboxModule } from '@angular/material/checkbox';
-import { CommonModule } from '@angular/common';
+import { CommonModule, NgTemplateOutlet } from '@angular/common';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { MatButtonModule } from '@angular/material/button';
-import { CountrySelectorComponent } from '../country-selector/country-selector.component';
 
 export interface IField extends FormControlOptions {
   controlType:
@@ -33,14 +34,18 @@ export interface IField extends FormControlOptions {
     | 'radio'
     | 'textarea'
     | 'hidden'
-    | 'component';
+    | 'component'
+    | 'template';
   label: string;
   key: string;
   options?: { text: string; value: string }[];
-  defaultValue?: any;
+  dValue?: any;
   type?: string; // number | text | email | ...
   errorMessage?: string;
   cmpLoader?: () => any;
+  control?: FormControl;
+  template?: TemplateRef<any>;
+  context?: { formControl: AbstractControl };
 }
 
 export interface IForm {
@@ -70,7 +75,6 @@ export class ComponentHostDirective {
     MatInputModule,
     MatButtonModule,
     MatCheckboxModule,
-    CountrySelectorComponent,
     ComponentHostDirective,
   ],
   templateUrl: './form-json.component.html',
@@ -82,15 +86,30 @@ export class FormJsonComponent<T extends { [key: string]: any }>
   @ViewChildren(ComponentHostDirective)
   componentHosts!: ComponentHostDirective[];
 
+  @Input() set templates(list: [string, TemplateRef<any>][]) {
+    const templateFields = this.formSettings.fields.filter(
+      item => item.controlType === 'template'
+    );
+
+    list.forEach(([key, template]) => {
+      const field = templateFields.find(item => item.key === key);
+      if (field) {
+        field.template = template;
+        field.context = {
+          formControl: this.form.get(key)!,
+        };
+      }
+    })
+  }
+
   @Input() set settings(formSettings: IForm) {
     if (formSettings) {
-      this.form = new FormGroup({});
       if (formSettings.validators) {
         this.form.addValidators(formSettings.validators);
       }
 
       formSettings.fields.forEach((field) => {
-        this.addControl(this.form, field);
+        field.control = this.addControl(this.form, field);
       });
       this.formSettings = formSettings;
 
@@ -113,13 +132,16 @@ export class FormJsonComponent<T extends { [key: string]: any }>
   form: FormGroup = new FormGroup({});
 
   private addControl(form: FormGroup, field: IField) {
-    const value = field.defaultValue || '';
+    const value = field.dValue || '';
     const validators = field.validators || [];
     const asyncValidators = field.asyncValidators || [];
+    console.log(field.key, value, validators, asyncValidators);
+    const control = new FormControl(value, { validators, asyncValidators });
     form.addControl(
       field.key,
-      new FormControl(value, { validators, asyncValidators })
+      control,
     );
+    return control;
   }
 
   onUpdate() {
@@ -156,6 +178,11 @@ export class FormJsonComponent<T extends { [key: string]: any }>
     instance.registerOnTouched(() => {
       control?.markAsTouched();
     });
+    console.log(control?.value, control?.getRawValue())
+    control?.valueChanges.subscribe((value: any) => {
+      instance.writeValue(value);
+    });
+    control?.setValue(componentHost.dValue)
   }
 
   // DYNAMIC COMPONENT LOADING /////////////////////////////////////////////////

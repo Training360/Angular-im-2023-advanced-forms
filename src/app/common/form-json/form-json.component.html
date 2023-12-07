@@ -33,6 +33,11 @@
               <div [componentHost]="field" style="margin: 0"></div>
             </div>
           }
+          @case ('template') {
+            @if (field.template) {
+              <ng-container *ngTemplateOutlet="field.template; context: field.context"></ng-container>
+            }
+          }
         }
       }
 
@@ -48,3 +53,7 @@
   </div>
   <div fxFlex="20" fxFlex.lt-md="1"></div>
 </div>
+
+<pre>
+  {{ form.value | json }}
+</pre>
