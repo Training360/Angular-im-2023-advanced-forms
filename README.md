@@ -4,8 +4,8 @@
 - `npm run dev`
 
 ## Intro
-- [customer-editor.component.ts](src/app/page/customer-editor/customer-editor.component.ts)
-- [customer-editor.component.html](src/app/page/customer-editor/customer-editor.component.html)
+- [CustomerAddComp](src/app/page/customer-add/customer-add.component.ts)
+- [CustomerAddComp html](src/app/page/customer-add/customer-add.component.html)
 
 ## JSON-based forms
 - command: `ng g c common/form-json`
