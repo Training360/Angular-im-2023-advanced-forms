@@ -35,8 +35,4 @@ export class CustomerService {
     return this.http.delete<Customer>(`${this.apiUrl}${customer.id}`);
   }
 
-  query(query: string): Observable<Customer[]> {
-    return this.http.get<Customer[]>(`${this.apiUrl}?${query}`);
-  }
-
 }

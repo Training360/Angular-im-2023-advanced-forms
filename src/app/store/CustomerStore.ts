@@ -44,12 +44,6 @@ export class CustomerStore {
     }
   }
 
-  async createItem(customer: Customer) {
-    const created = await firstValueFrom( this.customerService.create(customer) );
-    const list = [...this.state.list(), created];
-    patchState(this.state, { list });
-  }
-
   async load() {
     if (this.list().length > 0) return;
 
