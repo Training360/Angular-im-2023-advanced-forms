@@ -13,12 +13,13 @@
 - [FormJsonComp. html](src/app/common/form-json/form-json.component.html)
 - create: `src/app/form/forms.ts`
 - [Forms.ts](src/app/form/forms.ts)
-- [CustomersComp: add form-json](src/app/page/customer/customer.component.html)
+- command: `ng g c page/customer-add`
+- [CustomersComp: add link to customer-add](src/app/page/customer/customer.component.html)
+- [CustomerAddComp: add form-json](src/app/page/customer-add/customer-add.component.ts)
 
 ## Async Validation
 - [CustomerService: query](src/app/service/customer.service.ts)
 - [CustomerStore: createItem()](src/app/store/CustomerStore.ts)
-- command: `ng g c page/customer-add`
 - [CustomerAddComp.](src/app/page/customer-add/customer-add.component.ts)
 - [CustomersComp: add button, remove country](src/app/page/customer/customer.component.html)
 - [AppRoutes: customer/add](src/app/app.routes.ts)
