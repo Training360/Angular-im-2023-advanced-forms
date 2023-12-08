@@ -1,5 +1,7 @@
-const { spawn, exec } = require('child_process');
+const { exec } = require('child_process');
 const fs = require('fs');
+
+const command = process.argv.slice(2);
 
 const jsonFilePath = 'src/assets/forms.json';
 const jsonForms = JSON.parse(fs.readFileSync(jsonFilePath, 'utf-8'));
@@ -48,4 +50,4 @@ function runNpmScript(scriptName) {
   });
 }
 
-runNpmScript('npm run dev');
+runNpmScript(command[0]);

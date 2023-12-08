@@ -88,7 +88,6 @@ export class CustomerAddComponent {
     });
 
     formResolver('customerAdd').then(settings => {
-      console.log(settings);
       this.formSettings = settings;
     });
   }

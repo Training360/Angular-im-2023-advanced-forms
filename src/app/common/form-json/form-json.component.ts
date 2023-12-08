@@ -184,10 +184,11 @@ export class FormJsonComponent<T extends { [key: string]: any }>
     instance.registerOnChange((value: any) => {
       control?.setValue(value);
     });
+
     instance.registerOnTouched(() => {
       control?.markAsTouched();
     });
-    console.log(control?.value, control?.getRawValue())
+
     control?.valueChanges.subscribe((value: any) => {
       instance.writeValue(value);
     });

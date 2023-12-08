@@ -92,6 +92,7 @@ export const customerAdd: IForm = {
     },
     {
       controlType: 'template',
+      cmpLoader: () => import('../cva/rating-input.component').then(m => m.RatingInputComponent),
       label: 'Country2',
       key: 'country2',
       dValue: 'HU',
