@@ -17,8 +17,8 @@ import { Customer } from '../../model/customer';
 import { Router, RouterModule } from '@angular/router';
 import { CustomerService } from '../../service/customer.service';
 import { Observable, firstValueFrom, map } from 'rxjs';
-import { customerAdd } from '../../form/forms';
-import { FormJsonComponent } from '../../common/form-json/form-json.component';
+import { customerAdd, formResolver } from '../../form/forms';
+import { FormJsonComponent, IForm } from '../../common/form-json/form-json.component';
 import { CountrySelectorComponent } from '../../common/country-selector/country-selector.component';
 
 @Component({
@@ -59,15 +59,24 @@ export class CustomerAddComponent {
 
   selectError = this.store.error;
 
-  formSettings = {...customerAdd, fields: customerAdd.fields.map(field => {
-    if (field.key === 'email') {
-      return {
-        ...field,
-        asyncValidators: [this.validateEmail.bind(this)()],
-      };
-    }
-    return field;
-  })};
+  formSettings!: IForm;
+
+  // formSettings = {
+  //   ...customerAdd,
+  //   validators: [
+  //     ...(customerAdd.validators || []),
+  //     this.ipAndEmailValidator.bind(this)(),
+  //   ],
+  //   fields: customerAdd.fields.map(field => {
+  //     if (field.key === 'email') {
+  //       return {
+  //         ...field,
+  //         asyncValidators: [this.validateEmail.bind(this)()],
+  //       };
+  //     }
+  //     return field;
+  //   }),
+  // };
 
   constructor() {
     effect(() => {
@@ -76,6 +85,11 @@ export class CustomerAddComponent {
           duration: 3000,
         });
       }
+    });
+
+    formResolver('customerAdd').then(settings => {
+      console.log(settings);
+      this.formSettings = settings;
     });
   }
 
@@ -95,5 +109,15 @@ export class CustomerAddComponent {
         return null;
       }));
     }
+  }
+
+  ipAndEmailValidator() {
+    return (control: AbstractControl) => {
+      const value = control.value;
+      if (/^10/.test(value['ip_address']) && /\@\w*\..*$/.test(value['email'])) {
+        return {emailIpError: 'Corporate emails cannot have a top-level domain.'};
+      }
+      return null;
+    };
   }
 }

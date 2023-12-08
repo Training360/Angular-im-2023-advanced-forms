@@ -1,17 +1,40 @@
-import { AbstractControl, Validators } from "@angular/forms";
-import { IForm } from "../common/form-json/form-json.component";
+import { AbstractControl, ValidatorFn, Validators } from "@angular/forms";
+import { IField, IForm } from "../common/form-json/form-json.component";
+
+export const formResolver = async (formName: string) => {
+  const settings = await fetch(`./assets/forms.json`).then(
+    res => res.json()
+  );
+
+  const form = settings[formName];
+  if (!form) {
+    throw new Error('Form not found: ' + formName);
+  }
+
+  validatorResolver(form);
+
+  return form;
+}
+
+export const validatorResolver = async (form: any) => {
+  for (const field of form.fields) {
+    if (field.validators) {
+      field.validators = field.validators.map( (validator: {name: string, args: any[]}) => {
+        if (Validators.hasOwnProperty(validator.name)) {
+          let existingValidatior = (Validators as any)[validator.name];
+          if (validator.args && validator.args.length > 0) {
+            existingValidatior = existingValidatior(...validator.args);
+          }
+          return existingValidatior;
+        }
+        return validator;
+      });
+    }
+  }
+}
 
 export const customerAdd: IForm = {
   name: 'Add new Customer',
-  validators: [
-    (control: AbstractControl) => {
-      const value = control.value;
-      if (/^10/.test(value['ip_address']) && /\@\w*\..*$/.test(value['email'])) {
-        return {emailIpError: 'Corporate emails cannot have a top-level domain.'};
-      }
-      return null;
-    },
-  ],
   fields: [
     {
       controlType: 'input',
@@ -62,9 +85,9 @@ export const customerAdd: IForm = {
       controlType: 'component',
       label: 'Country',
       key: 'country',
-      cmpLoader: () => import(
-        '../common/country-selector/country-selector.component'
-      ).then(m => m.CountrySelectorComponent),
+      cmpLoader: () => import('../common/country-selector/country-selector.component').then(m => m.CountrySelectorComponent),
+      cmpPath: '/country-selector.component-Y74FY4ML.js',
+      cmpName: 'CountrySelectorComponent',
       dValue: 'US',
     },
     {

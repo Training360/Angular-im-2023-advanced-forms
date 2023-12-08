@@ -6,6 +6,7 @@ import {
   Input,
   Output,
   TemplateRef,
+  Type,
   ViewChildren,
   ViewContainerRef,
   inject,
@@ -43,6 +44,8 @@ export interface IField extends FormControlOptions {
   type?: string; // number | text | email | ...
   errorMessage?: string;
   cmpLoader?: () => any;
+  cmpPath?: string;
+  cmpName?: string;
   template?: TemplateRef<any>;
   context?: {
     formControl: AbstractControl,
@@ -88,21 +91,19 @@ export class FormJsonComponent<T extends { [key: string]: any }>
   @ViewChildren(ComponentHostDirective)
   componentHosts!: ComponentHostDirective[];
 
-  @Input() set templates(list: [string, TemplateRef<any>][]) {
-    const templateFields = this.formSettings.fields.filter(
+  @Input() set templates(list: { [key: string]: TemplateRef<any> }) {
+    this.formSettings.fields.filter(
       item => item.controlType === 'template'
-    );
-
-    list.forEach(([key, template]) => {
-      const field = templateFields.find(item => item.key === key);
-      if (field) {
+    ).forEach(field => {
+      const template = list[field.key];
+      if (template) {
         field.template = template;
         field.context = {
-          formControl: this.form.get(key)!,
+          formControl: this.form.get(field.key)!,
           field,
         };
       }
-    })
+    });
   }
 
   @Input() set settings(formSettings: IForm) {
@@ -166,14 +167,17 @@ export class FormJsonComponent<T extends { [key: string]: any }>
     const { viewContainerRef, componentHost } = host;
     viewContainerRef.clear();
 
-    if (!componentHost.cmpLoader) {
+    let comp = new Promise(() => {});
+    if (componentHost.cmpLoader) {
+      comp = await componentHost.cmpLoader();
+    } else if (componentHost.cmpPath) {
+      comp = await import(/* @vite-ignore */componentHost.cmpPath).then(m => m[componentHost.cmpName!]);
+    } else {
       return;
     }
 
-    const comp = await componentHost.cmpLoader();
-
     const { instance } = viewContainerRef.createComponent<any>(
-      comp
+      comp as any
     );
 
     const control = this.form.get(componentHost.key);
