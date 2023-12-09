@@ -17,7 +17,7 @@ import { Customer } from '../../model/customer';
 import { Router, RouterModule } from '@angular/router';
 import { CustomerService } from '../../service/customer.service';
 import { Observable, firstValueFrom, map } from 'rxjs';
-import { customerAdd, formResolver } from '../../form/forms';
+import { formResolver } from '../../form/forms';
 import { FormJsonComponent, IForm } from '../../common/form-json/form-json.component';
 import { CountrySelectorComponent } from '../../common/country-selector/country-selector.component';
 
