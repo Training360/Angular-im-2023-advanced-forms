@@ -71,7 +71,7 @@
         "controlType": "component",
         "label": "Country",
         "key": "country",
-        "cmpPath": "/country-selector.component-SNOA4FGY.js",
+        "cmpPath": "/country-selector.component-YM7GCDNP.js",
         "cmpName": "CountrySelectorComponent",
         "dValue": "US"
       },
@@ -86,7 +86,7 @@
         "label": "Rating",
         "key": "rating",
         "dValue": "1",
-        "cmpPath": "/rating-input.component-5P5QON22.js",
+        "cmpPath": "/rating-input.component-3KDGE3GC.js",
         "cmpName": "RatingInputComponent"
       },
       {

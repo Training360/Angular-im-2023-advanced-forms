@@ -25,6 +25,7 @@ import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
         cursor: pointer;
         font-size: 2em;
         user-select: none;
+        text-shadow: 1px 1px 2px #333;
       }
     `,
   ],
