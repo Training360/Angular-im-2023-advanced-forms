@@ -1,5 +1,4 @@
-import { AbstractControl, ValidatorFn, Validators } from "@angular/forms";
-import { IField, IForm } from "../common/form-json/form-json.component";
+import { Validators } from "@angular/forms";
 import { isDevMode } from "@angular/core";
 
 export const formResolver = async (formName: string) => {
