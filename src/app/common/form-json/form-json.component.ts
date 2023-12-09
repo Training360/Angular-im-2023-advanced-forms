@@ -168,9 +168,7 @@ export class FormJsonComponent<T extends { [key: string]: any }>
     viewContainerRef.clear();
 
     let comp = new Promise(() => {});
-    if (componentHost.cmpLoader) {
-      comp = await componentHost.cmpLoader();
-    } else if (componentHost.cmpPath) {
+    if (componentHost.cmpPath) {
       comp = await import(/* @vite-ignore */componentHost.cmpPath).then(m => m[componentHost.cmpName!]);
     } else {
       return;
