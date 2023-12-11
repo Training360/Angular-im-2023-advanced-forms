@@ -62,6 +62,19 @@ export const routes: Routes = [
     },
   },
   {
+    path: 'customer/add',
+    loadComponent: () => import('./page/customer-add/customer-add.component').then(
+      m => m.CustomerAddComponent
+    ),
+    canActivate: [
+      authGuard,
+      roleGuard,
+    ],
+    data: {
+      role: 1,
+    },
+  },
+  {
     path: 'login',
     loadComponent: () => import('./page/login/login.component').then(
       m => m.LoginComponent

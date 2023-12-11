@@ -1,0 +1,47 @@
+<div fxLayout="row">
+  <div fxFlex="20" fxFlex.lt-md="1"></div>
+  <div fxFlex="60" fxFlex.lt-md="98">
+    <h3>{{ formSettings.name }}</h3>
+    <form fxLayout="column" fxLayoutGap="1.5em" [formGroup]="form" (ngSubmit)="onUpdate()">
+      @for (field of formSettings.fields; track $index) {
+        @switch(field.controlType) {
+          @case ('checkbox') {
+            <mat-checkbox color="primary" [formControlName]="field.key">
+              {{ field.label }}
+            </mat-checkbox>
+          }
+          @case ('hidden') {
+            <input type="hidden" [formControlName]="field.key">
+          }
+          @case ('input') {
+            <mat-form-field appearance="outline">
+              <mat-label>{{ field.label }}</mat-label>
+              <input
+                [type]="field.type || 'text'"
+                matInput
+                [formControlName]="field.key"
+                [placeholder]="field.label">
+              @if (form.controls[field.key].invalid) {
+                <mat-hint>{{ field.errorMessage || 'Error' }}</mat-hint>
+              }
+            </mat-form-field>
+          }
+        }
+      }
+
+      @for (err of form.errors | keyvalue; track $index) {
+        <mat-hint>{{ err.value || 'Error' }}</mat-hint>
+      }
+
+      <button [disabled]="!form.valid" type="submit" mat-raised-button color="primary">
+        Save
+      </button>
+    </form>
+
+  </div>
+  <div fxFlex="20" fxFlex.lt-md="1"></div>
+</div>
+
+<pre>
+  {{ form.value | json }}
+</pre>
