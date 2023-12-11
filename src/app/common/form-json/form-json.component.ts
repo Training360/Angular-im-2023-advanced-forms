@@ -66,6 +66,20 @@ export interface IForm {
 })
 export class FormJsonComponent<T extends { [k: string]: any }> {
 
+  @Input() set templates(list: { [k: string]: TemplateRef<any> } ) {
+    this.formSettings.fields.filter( f => f.controlType === 'template' )
+      .forEach( field => {
+        const template = list[field.key];
+        if (template) {
+          field.template = template;
+          field.context = {
+            formControl: this.form.get(field.key)!,
+            field,
+          };
+        }
+      });
+  }
+
   @Input() set settings(formSettings: IForm) {
     if (formSettings) {
       if (formSettings.validators) {

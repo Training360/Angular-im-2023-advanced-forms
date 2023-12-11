@@ -19,7 +19,7 @@ import { CustomerService } from '../../service/customer.service';
 import { Observable, firstValueFrom, map } from 'rxjs';
 import { formResolver } from '../../form/forms';
 import { FormJsonComponent, IField, IForm } from '../../common/form-json/form-json.component';
-import { CountrySelectorComponent } from '../../common/country-selector/country-selector.component';
+import { CountrySelectorComponent } from '../../cva/country-selector/country-selector.component';
 
 @Component({
   selector: 'app-customer-add',
