@@ -9,7 +9,7 @@
     "test": "ng test",
     "server": "json-server-auth --watch server/db.json --port 3000",
     "dev": "concurrently --kill-others \"ng serve\" \"npm run server\"",
-    "form:server": "node json-resolver.js 'npm run dev'",
+    "form:server": "node json-resolver.js \"npm run dev\"",
     "form:build": "node json-resolver.js 'ng build'"
   },
   "private": true,

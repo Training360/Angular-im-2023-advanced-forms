@@ -18,7 +18,7 @@ import { Router, RouterModule } from '@angular/router';
 import { CustomerService } from '../../service/customer.service';
 import { Observable, firstValueFrom, map } from 'rxjs';
 import { formResolver } from '../../form/forms';
-import { FormJsonComponent, IForm } from '../../common/form-json/form-json.component';
+import { FormJsonComponent, IField, IForm } from '../../common/form-json/form-json.component';
 import { CountrySelectorComponent } from '../../common/country-selector/country-selector.component';
 
 @Component({
@@ -88,6 +88,21 @@ export class CustomerAddComponent {
     });
 
     formResolver('customerAdd').then(settings => {
+      settings.validators = [
+        ...(settings.validators || []),
+        this.ipAndEmailValidator.bind(this)(),
+      ];
+
+      settings.fields = settings.fields.map((field: IField) => {
+        if (field.key === 'email') {
+          return {
+            ...field,
+            asyncValidators: [this.validateEmail.bind(this)()],
+          };
+        }
+        return field;
+      });
+
       this.formSettings = settings;
     });
   }
