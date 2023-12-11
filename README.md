@@ -13,6 +13,7 @@
 - [FormJsonComp. html](src/app/common/form-json/form-json.component.html)
 - create: `src/app/form/forms.ts`
 - [Forms.ts](src/app/form/forms.ts)
+- [Forms.json](src/assets/forms.json)
 - command: `ng g c page/customer-add`
 - [CustomersComp: add link to customer-add](src/app/page/customer/customer.component.html)
 - [AppRoutes: customer/add](src/app/app.routes.ts)
